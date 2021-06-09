@@ -1,0 +1,12 @@
+appstate.json
+.env
+.npm
+*.tgz
+*.mp3
+*.mp4
+*.png
+*.gif
+logs/
+node_modules/
+includes/data.sqlite
+fbstate.json
