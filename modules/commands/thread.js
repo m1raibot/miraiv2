@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "thread",
-	version: "0.0.1",
+	version: "0.0.2",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm nhóm",
@@ -13,16 +13,18 @@ module.exports.handleReaction = async ({ event, api, Threads, handleReaction }) 
 	if (parseInt(event.userID) !== parseInt(handleReaction.author)) return;
 	switch (handleReaction.type) {
 		case "ban": {
-			await Threads.setData(handleReaction.target, { banned: 1 });
-			let dataThread = global.data.threadBanned.get(parseInt(handleReaction.target)) || {};
-			dataThread["banned"] = 1;
-			global.data.threadBanned.set(parseInt(handleReaction.target), dataThread);
+			const data = (await Threads.getData(handleReaction.target)).data || {};
+			data.banned = 1;
+			await Threads.setData(handleReaction.target, { data });
+			global.data.threadBanned.set(parseInt(handleReaction.target), 1);
 			api.sendMessage(`[${handleReaction.target}] Đã ban thành công!`, event.threadID, () => api.unsendMessage(handleReaction.messageID));
 			break;
 		}
 		case "unban": {
-			await Threads.setData(handleReaction.target, { banned: 0 });
-			global.data.threadBanned.delete(parseInt(handleReaction.target));
+			const data = (await Threads.getData(handleReaction.target)).data || {};
+			data.banned = 0;
+			await Threads.setData(handleReaction.target, { data });
+			global.data.threadBanned.delete(parseInt(handleReaction.target), 1);
 			api.sendMessage(`[${handleReaction.target}] Đã unban thành công!`, event.threadID, () => api.unsendMessage(handleReaction.messageID));
 			break;
 		}
@@ -59,9 +61,9 @@ module.exports.run = async ({ event, api, args, Threads }) => {
 			for (let idThread of content) {
 				idThread = parseInt(idThread);
 				if (isNaN(idThread)) return api.sendMessage(`[${idThread}] không phải là IDthread!`, event.threadID);
-				let dataThread = (await Threads.getData(idThread.toString()));
+				let dataThread = (await Threads.getData(idThread)).data;
 				if (!dataThread) return api.sendMessage(`[${idThread}] thread không tồn tại trong database!`, event.threadID);
-				if (!dataThread.banned) return api.sendMessage(`[${idThread}] Không bị ban từ trước`, event.threadID);
+				if (dataThread.banned == 1) return api.sendMessage(`[${idThread}] Không bị ban từ trước`, event.threadID);
 				return api.sendMessage(`[${idThread}] Bạn muốn unban thread này ?\n\nHãy reaction vào tin nhắn này để ban!`, event.threadID, (error, info) => {
 					global.client.handleReaction.push({
 						name: this.config.name,

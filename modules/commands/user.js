@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "user",
-	version: "0.0.1",
+	version: "0.0.2",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm người dùng",
@@ -14,16 +14,18 @@ module.exports.handleReaction = async ({ event, api, Users, handleReaction }) =>
 	switch (handleReaction.type) {
 		case "ban": {
 			var name = (await Users.getData(handleReaction.target)).name || (await api.getUserInfo(handleReaction.target))[handleReaction.target].name;
-			await Users.setData(handleReaction.target, { banned: 1 });
-			let dataUser = global.data.userBanned.get(handleReaction.target) || {};
-			dataUser["banned"] = 1;
-			global.data.userBanned.set(parseInt(handleReaction.target), dataUser);
+			const data = (await Users.getData(handleReaction.target)).data || {};
+			data.banned = 1;
+			await Users.setData(handleReaction.target, { data });
+			global.data.userBanned.set(parseInt(handleReaction.target), 1);
 			api.sendMessage(`[${handleReaction.target} | ${name}] Đã ban thành công!`, event.threadID, () => api.unsendMessage(handleReaction.messageID));
 			break;
 		}
 		case "unban": {
 			var name = (await Users.getData(handleReaction.target)).name || (await api.getUserInfo(handleReaction.target))[handleReaction.target].name;
-			await Users.setData(handleReaction.target, { banned: 0 });
+			const data = (await Users.getData(handleReaction.target)).data || {};
+			data.banned = 0;
+			await Users.setData(handleReaction.target, { data });
 			global.data.userBanned.delete(parseInt(handleReaction.target));
 			api.sendMessage(`[${handleReaction.target} | ${name}] Đã unban thành công!`, event.threadID, () => api.unsendMessage(handleReaction.messageID));
 			break;
@@ -61,9 +63,9 @@ module.exports.run = async ({ event, api, args, Users }) => {
 			for (let idUser of content) {
 				idUser = parseInt(idUser);
 				if (isNaN(idUser)) return api.sendMessage(`[${idUser}] không phải là ID người dùng!`, event.threadID);
-				let dataUser = (await Users.getData(idUser.toString()));
+				let dataUser = (await Users.getData(idUser)).data;
 				if (!dataUser) return api.sendMessage(`[${idUser}] người dùng không tồn tại trong database!`, event.threadID);
-				if (!dataUser.banned) return api.sendMessage(`[${idUser}] người dùng không bị ban từ trước`, event.threadID);
+				if (dataUser.banned == 1) return api.sendMessage(`[${idUser}] người dùng không bị ban từ trước`, event.threadID);
 				return api.sendMessage(`[${idUser}] Bạn muốn unban người dùng này ?\n\nHãy reaction vào tin nhắn này để ban!`, event.threadID, (error, info) => {
 					global.client.handleReaction.push({
 						name: this.config.name,
