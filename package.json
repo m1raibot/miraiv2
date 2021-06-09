@@ -10,7 +10,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/catalizcs/miraiv2.git"
+		"url": "git+https://github.com/miraipr0ject/miraiv2.git"
 	},
 	"keywords": [
 		"bot",
@@ -19,14 +19,15 @@
 		"messenger",
 		"mirai",
 		"catalizcs",
-		"spermlord"
+		"spermlord",
+		"miraipr0ject"
 	],
 	"author": "CatalizCS & SpermLord",
 	"license": "GPL-3.0",
 	"bugs": {
-		"url": "https://github.com/catalizcs/miraiv2/issues"
+		"url": "https://github.com/miraipr0ject/miraiv2/issues"
 	},
-	"homepage": "https://github.com/catalizcs/miraiv2#readme",
+	"homepage": "https://github.com/miraipr0ject/miraiv2#readme",
 	"dependencies": {
 		"axios": "",
 		"body-parser": "",
