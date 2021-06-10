@@ -1,16 +1,16 @@
 module.exports.config = {
 	name: "baicao",
-	version: "1.0.0",
+	version: "1.0.1",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Game bài cào dành cho nhóm",
 	commandCategory: "game-mp",
-	usages: "[start/join/lít/leave/test]",
+	usages: "[start/join/list/leave/test]",
 	cooldowns: 1
 };
 
 module.exports.handleEvent = async ({ event, api, Users }) => {
-	const { senderID, threadID, body } = event;
+	const { senderID, threadID, body, messageID } = event;
 
 	if (!global.moduleData.baicao) global.moduleData.baicao = new Map();
 	if (!global.moduleData.baicao.has(threadID)) return;

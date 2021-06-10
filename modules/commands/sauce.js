@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "sauce",
-	version: "1.0.0",
+	version: "1.0.1",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Tìm kiếm thông tin ảnh thông qua ảnh (chỉ dành cho anime và hentai)",
@@ -16,7 +16,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ api, event }) => {
-	const sagiri = global.nodemodule["sagiri"], search = sagiri(global.configModule[this.config.name].SAUVENAO_API);
+	const sagiri = global.nodemodule["sagiri"], search = sagiri(global.configModule[this.config.name].SAUCENAO_API);
 	if (event.type != "message_reply") return api.sendMessage(`Vui lòng bạn reply bức ảnh cần phải tìm!`, event.threadID, event.messageID);
 	if (event.messageReply.attachments.length > 1) return api.sendMessage(`Vui lòng reply chỉ một ảnh!`, event.threadID, event.messageID);
 	if (event.messageReply.attachments[0].type == 'photo') {

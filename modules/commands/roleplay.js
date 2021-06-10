@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "roleplay",
-	version: "1.0.0",
+	version: "1.0.1",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Hun, ôm, ... đủ thứ trò in here!",
@@ -110,7 +110,7 @@ module.exports.handleEvent = async ({ event, api }) => {
 }
 
 module.exports.run = async ({ event, api, Threads }) => {
-    let data = (await Threads.getData(event.threadID)).data;
+    let data = (await Threads.getData(event.threadID)).data || {};
     if (typeof data["roleplay"] == "undefined" || data["roleplay"] == false) data["roleplay"] = true;
 	else data["roleplay"] = false;
 	

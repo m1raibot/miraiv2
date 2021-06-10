@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "user",
-	version: "0.0.2",
+	version: "0.0.3",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm người dùng",
@@ -13,7 +13,7 @@ module.exports.handleReaction = async ({ event, api, Users, handleReaction }) =>
 	if (parseInt(event.userID) !== parseInt(handleReaction.author)) return;
 	switch (handleReaction.type) {
 		case "ban": {
-			var name = (await Users.getData(handleReaction.target)).name || (await api.getUserInfo(handleReaction.target))[handleReaction.target].name;
+			const name = global.data.userName.get(handleReaction.target) || await Users.getNameUser(handleReaction.target);
 			const data = (await Users.getData(handleReaction.target)).data || {};
 			data.banned = 1;
 			await Users.setData(handleReaction.target, { data });
@@ -22,7 +22,7 @@ module.exports.handleReaction = async ({ event, api, Users, handleReaction }) =>
 			break;
 		}
 		case "unban": {
-			var name = (await Users.getData(handleReaction.target)).name || (await api.getUserInfo(handleReaction.target))[handleReaction.target].name;
+			const name = global.data.userName.get(handleReaction.target) || await Users.getNameUser(handleReaction.target);
 			const data = (await Users.getData(handleReaction.target)).data || {};
 			data.banned = 0;
 			await Users.setData(handleReaction.target, { data });
@@ -65,7 +65,7 @@ module.exports.run = async ({ event, api, args, Users }) => {
 				if (isNaN(idUser)) return api.sendMessage(`[${idUser}] không phải là ID người dùng!`, event.threadID);
 				let dataUser = (await Users.getData(idUser)).data;
 				if (!dataUser) return api.sendMessage(`[${idUser}] người dùng không tồn tại trong database!`, event.threadID);
-				if (dataUser.banned == 1) return api.sendMessage(`[${idUser}] người dùng không bị ban từ trước`, event.threadID);
+				if (dataUser.banned != 1) return api.sendMessage(`[${idUser}] người dùng không bị ban từ trước`, event.threadID);
 				return api.sendMessage(`[${idUser}] Bạn muốn unban người dùng này ?\n\nHãy reaction vào tin nhắn này để ban!`, event.threadID, (error, info) => {
 					global.client.handleReaction.push({
 						name: this.config.name,

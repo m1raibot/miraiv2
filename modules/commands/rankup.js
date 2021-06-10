@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "rankup",
-	version: "0.0.1-beta",
+	version: "0.0.2",
 	hasPermssion: 1,
 	credits: "Mirai Team",
 	description: "Thông báo rankup cho từng nhóm, người dùng",
@@ -21,30 +21,36 @@ module.exports.handleEvent = async function({ api, event, Currencies, Users }) {
 
 	const thread = global.data.threadData.get(parseInt(threadID)) || {};
 
-	if (typeof thread["rankup"] != "undefined" && thread["rankup"] == false) return;
 	var exp = parseInt((await Currencies.getData(senderID)).exp);
 	exp = exp += 1;
 
 	if (isNaN(exp)) return;
 
+	if (typeof thread["rankup"] != "undefined" && thread["rankup"] == false) {
+		await Currencies.setData(senderID, { exp });
+		return;
+	};
+
 	const curLevel = Math.floor((Math.sqrt(1 + (4 * exp / 3) + 1) / 2));
 	const level = Math.floor((Math.sqrt(1 + (4 * (exp + 1) / 3) + 1) / 2));
 
 	if (level > curLevel && level != 1) {
-		const nameUser = await Users.getNameUser(senderID);
+		const name = global.data.userName.get(senderID) || await Users.getNameUser(senderID);
 		var messsage = (typeof thread.customRankup == "undefined") ? msg = "Trình độ chém gió của {name} đã đạt tới level {level}" : msg = thread.customRankup,
 			arrayContent;
 
 		messsage = messsage
-			.replace(/\{name}/g, nameUser)
+			.replace(/\{name}/g, name)
 			.replace(/\{level}/g, level);
 			
 		if (existsSync(__dirname + "/cache/rankup/")) mkdirSync(__dirname + "/cache/rankup/", { recursive: true });
 		if (existsSync(__dirname + `/cache/rankup/${event.threadID}.gif`)) arrayContent = { body: messsage, attachment: createReadStream(__dirname + `/cache/rankup/${event.threadID}.gif`), mentions: [{ tag: nameUser, id: senderID }] };
-		else arrayContent = { body: messsage, mentions: [{ tag: nameUser, id: senderID }] };
+		else arrayContent = { body: messsage, mentions: [{ tag: name, id: senderID }] };
+		const moduleName = this.config.name;
 		api.sendMessage(arrayContent, threadID, async function (error, info){
-			if (global.configModule[this.config.name].autoUnsend) {
-				await new Promise(resolve => setTimeout(resolve, global.configModule[this.config.name].unsendMessageAfter * 1000));
+			if (global.configModule[moduleName].autoUnsend) {
+				console.log(global.configModule[moduleName].autoUnsend);
+				await new Promise(resolve => setTimeout(resolve, global.configModule[moduleName].unsendMessageAfter * 1000));
 				return api.unsendMessage(info.messageID);
 			} else return;
 		});

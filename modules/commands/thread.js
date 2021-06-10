@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "thread",
-	version: "0.0.2",
+	version: "0.0.3",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm nhóm",
@@ -63,7 +63,7 @@ module.exports.run = async ({ event, api, args, Threads }) => {
 				if (isNaN(idThread)) return api.sendMessage(`[${idThread}] không phải là IDthread!`, event.threadID);
 				let dataThread = (await Threads.getData(idThread)).data;
 				if (!dataThread) return api.sendMessage(`[${idThread}] thread không tồn tại trong database!`, event.threadID);
-				if (dataThread.banned == 1) return api.sendMessage(`[${idThread}] Không bị ban từ trước`, event.threadID);
+				if (dataThread.banned != 1) return api.sendMessage(`[${idThread}] Không bị ban từ trước`, event.threadID);
 				return api.sendMessage(`[${idThread}] Bạn muốn unban thread này ?\n\nHãy reaction vào tin nhắn này để ban!`, event.threadID, (error, info) => {
 					global.client.handleReaction.push({
 						name: this.config.name,
