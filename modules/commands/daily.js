@@ -32,5 +32,6 @@ module.exports.run = async ({ event, api, Currencies }) => {
         await Currencies.increaseMoney(senderID, rewardCoin);
         data.dailyCoolDown = Date.now();
         await Currencies.setData(senderID, { data });
+        return;
     });
 }

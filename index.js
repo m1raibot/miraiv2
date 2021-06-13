@@ -36,7 +36,7 @@ if (process.env.API_SERVER_EXTERNAL == 'https://api.glitch.com') {
 //========= Check update from Github =========//
 ////////////////////////////////////////////////
 
-axios.get('https://raw.githubusercontent.com/catalizcs/miraiv2/master/package.json').then((res) => {
+axios.get('https://raw.githubusercontent.com/miraipr0ject/miraiv2/master/package.json').then((res) => {
     logger("Đang kiểm tra cập nhật...", "[ CHECK UPDATE ]");
     const local = JSON.parse(readFileSync('./package.json')).version;
     if (semver.lt(local, res.data.version)) logger(`Đã có phiên bản ${res.data.version} để bạn có thể cập nhật!`, "[ CHECK UPDATE ]");

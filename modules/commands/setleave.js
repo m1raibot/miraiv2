@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "setleave",
-    version: "1.0.0",
+    version: "1.0.1",
     hasPermssion: 1,
     credits: "Mirai Team",
     description: "Chỉnh sửa văn bản/ảnh động khi có thành viên mới rời khỏi nhóm",
@@ -53,7 +53,9 @@ module.exports.run = async function ({ args, event, api, Threads }) {
                 }
                 else {
                     if (!msg.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:gif|GIF)/g)) return api.sendMessage("Url bạn nhập không phù hợp!", threadID, messageID);
-                    await global.utils.downloadFile(msg, pathGif);
+                    try {
+                        await global.utils.downloadFile(msg, pathGif);
+                    } catch (e) { return api.sendMessage("Không thể tải file vì url không tồn tại hoặc bot đã xảy ra vấn đề về mạng!", threadID, messageID); }
                     return api.sendMessage({ body: "Đã lưu file gif của nhóm bạn thành công, bên dưới đây là preview:", attachment: createReadStream(pathGif) }, threadID, messageID);
                 }
             }

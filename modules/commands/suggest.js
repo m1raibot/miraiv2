@@ -18,7 +18,7 @@ module.exports.onLoad = function () {
 	}
 }
 
-module.exports.run = function({ api, event, args, permssion, utils }) {
+module.exports.run = function({ api, event, args, permssion }) {
 	const fs = require("fs-extra");
 	const content = args.slice(1, args.length);
 	const dirFile = __dirname + "/cache/requestList.json";
@@ -52,7 +52,7 @@ module.exports.run = function({ api, event, args, permssion, utils }) {
 			return api.sendMessage(`Đã xóa thành công mục có id là: ${content}`, event.threadID, event.messageID);
 		}
 		default:
-			utils.throwError("suggest", event.threadID, event.messageID);
+			global.utils.throwError("suggest", event.threadID, event.messageID);
 		break;
 	}
 }

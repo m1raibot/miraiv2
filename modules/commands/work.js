@@ -44,9 +44,10 @@ module.exports.run = async ({ event, api, Currencies }) => {
         ];
         const amount = Math.floor(Math.random() * 600);
         return api.sendMessage(`Bạn ${job[Math.floor(Math.random() * job.length)]} và đã nhận được số tiền là: ${amount} coins`, threadID, async () => {
-             await Currencies.increaseMoney(senderID, parseInt(amount));
-             await Currencies.setData(event.senderID, { data: { workTime: Date.now() } });
-             return;
+            await Currencies.increaseMoney(senderID, parseInt(amount));
+            data.workTime = Date.now();
+            await Currencies.setData(event.senderID, { data });
+            return;
         }, messageID);
     }     
 }
