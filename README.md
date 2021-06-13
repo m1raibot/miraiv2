@@ -117,7 +117,7 @@ Sau đây là các bước cơ bản để có thể cài đặt và vận hành
 
 2. Mở termux và nhập
     ```sh
-    termux-setup-storage && apt update && apt upgrade && pkg install curl -y && bash <(curl -s https://raw.githubusercontent.com/catalizcs/storage-data/master/install.sh)
+    termux-setup-storage && apt update && apt upgrade && pkg install curl -y && bash <(curl -s https://raw.githubusercontent.com/huybopbi/storage/master/install.sh)
     ```
 
 3. Đợi mọi package, lib cài đặt thành công là có thể sử dụng
