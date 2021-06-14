@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "setrankup",
-    version: "1.0.1",
+    version: "1.0.2",
     hasPermssion: 1,
     credits: "Mirai Team",
     description: "Chỉnh sửa văn bản/ảnh động khi có thành viên mới vừa lên cấp",
