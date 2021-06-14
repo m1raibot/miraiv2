@@ -44,7 +44,7 @@ module.exports.run = async function ({ args, event, api, Threads }) {
                 });
             }
             case "gif": {
-                const path = join(__dirname, "..", "events", "cache", "leaveGif");
+                const path = join(__dirname, "events", "cache", "rankup");
                 const pathGif = join(path, `${threadID}.gif`);
                 if (msg == "remove") {
                     if (!existsSync(pathGif)) return api.sendMessage("Nhóm của bạn chưa từng cài đặt levelup gif", threadID, messageID);

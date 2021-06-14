@@ -15,7 +15,7 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ api, event }) => {
-	return global.nodemodule["request"](`https://www.behindthename.com/api/random.json?usage=jap&gender=f&key=${global.rname.APIKEY}`, (err, response, body) => {
+	return global.nodemodule["request"](`https://www.behindthename.com/api/random.json?usage=jap&gender=f&key=${global.configModule[this.config.name].APIKEY}`, (err, response, body) => {
 		const data = JSON.parse(body);
 		api.changeNickname(`${data.names[0]} ${data.names[1]}`, event.threadID, event.senderID);
 	});
