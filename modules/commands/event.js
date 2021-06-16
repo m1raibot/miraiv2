@@ -57,12 +57,12 @@ module.exports.run = function ({ event, args, api }) {
             else return unloadModule({ moduleList, threadID, messageID });
         }
         case "loadAll": {
-            moduleList = readdirSync(join(__dirname, "..", "events")).filter((file) => file.endsWith(".js") && !file.includes('example'));
+            moduleList = readdirSync(join(global.client.mainPath, "modules", "events")).filter((file) => file.endsWith(".js") && !file.includes('example'));
             moduleList = moduleList.map(item => item.replace(/\.js/g, ""));
             return loadCommand({ moduleList, threadID, messageID });
         }
         case "unloadAll": {
-            moduleList = readdirSync(join(__dirname, "..", "events")).filter((file) => file.endsWith(".js") && !file.includes('example'));
+            moduleList = readdirSync(join(global.client.mainPath, "modules", "events")).filter((file) => file.endsWith(".js") && !file.includes('example'));
             moduleList = moduleList.map(item => item.replace(/\.js/g, ""));
             return unloadModule({ moduleList, threadID, messageID });
         }

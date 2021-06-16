@@ -39,7 +39,18 @@ if (process.env.API_SERVER_EXTERNAL == 'https://api.glitch.com') {
 axios.get('https://raw.githubusercontent.com/miraipr0ject/miraiv2/master/package.json').then((res) => {
     logger("Đang kiểm tra cập nhật...", "[ CHECK UPDATE ]");
     const local = JSON.parse(readFileSync('./package.json')).version;
-    if (semver.lt(local, res.data.version)) logger(`Đã có phiên bản ${res.data.version} để bạn có thể cập nhật!`, "[ CHECK UPDATE ]");
+    if (semver.lt(local, res.data.version)) {
+        logger(`Đã có phiên bản ${res.data.version}, tiến hành cập nhật source code!`, "[ CHECK UPDATE ]");
+        const child = spawn("node", ["update.js"], {
+            cwd: __dirname,
+            stdio: "inherit",
+            shell: true
+        });
+
+        child.on("error", function (error) {
+            logger("Đã xảy ra lỗi: " + JSON.stringify(error), "[ CHECK UPDATE ]");
+        });
+    }
     else logger('Bạn đang sử dụng bản mới nhất!', "[ CHECK UPDATE ]");
 }).catch(err => logger("Đã có lỗi xảy ra khi đang kiểm tra cập nhật cho bạn!", "[ CHECK UPDATE ]"));
 
