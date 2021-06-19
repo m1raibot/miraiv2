@@ -46,6 +46,7 @@
 		"npmlog": "",
 		"path": "",
 		"readline": "",
+		"simple-git": "",
 		"request": "",
 		"semver": "",
 		"sequelize": "",
