@@ -70,6 +70,7 @@ module.exports = function ({ models }) {
 		if (typeof money != 'number') throw 'Phải là 1 số.';
 		try {
 			let balance = (await getData(userID)).money;
+			if (balance < money) return false;
 			await setData(userID, { money: balance - money });
 			return true;
 		}

@@ -25,7 +25,7 @@ module.exports.onLoad = function () {
 
 module.exports.run = async function ({ args, event, api, Threads }) {
     try {
-        const { existsSync } = global.nodemodule["fs-extra"];
+        const { existsSync, createReadStream } = global.nodemodule["fs-extra"];
         const { join } = global.nodemodule["path"];
         const { threadID, messageID } = event;
         const msg = args.slice(1, args.length).join(" ");
