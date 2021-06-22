@@ -145,7 +145,10 @@ Sau đây là các bước cơ bản để có thể cài đặt và vận hành
 
 1. Cài đặt node và git bằng cách nhập vào terminal
     ```sh
-    sudo apt install nodejs git -y
+    sudo apt-get install curl
+    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+    sudo apt-get install nodejs git sqlite3 -y
+    npm install -g npm
     ```
 
 2. Clone source code của bot bằng cách nhập vào terminal
