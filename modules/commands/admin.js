@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "admin",
-	version: "1.0.0",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Quản lý admin bot",
@@ -19,6 +19,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion }) {
     const { ADMINBOT } = global.config;
     const { userName } = global.data;
     const { writeFileSync } = global.nodemodule["fs-extra"];
+    const mention = Object.keys(mentions);
 
     delete require.cache[require.resolve(configPath)];
     var config = require(configPath);
@@ -42,8 +43,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion }) {
 
         case "add": {
             if (permssion != 2) return api.sendMessage("[Admin] Bạn không đủ quyền hạn để có thể sử dụng chức năng 'add'", threadID, messageID);
-            if (mentions.length != 0) {
-                const mention = Object.keys(mentions);
+            if (mention.length != 0 && isNaN(content[0])) {
                 var listAdd = [];
 
                 for (const id of mention) {
@@ -56,11 +56,11 @@ module.exports.run = async function ({ api, event, args, Users, permssion }) {
                 return api.sendMessage(`[Admin] Đã thêm ${mention.length} người dùng trở thành người điều hành bot:\n\n${listAdd.join("\n").replace(/\@/g, "")}`, threadID, messageID);
             }
             else if (content.length != 0 && !isNaN(content[0])) {
-                ADMINBOT.push(content);
-                config.ADMINBOT.push(content);
-                const name = userName.get(content) || await Users.getNameUser(content);
+                ADMINBOT.push(content[0]);
+                config.ADMINBOT.push(content[0]);
+                const name = userName.get(content[0]) || await Users.getNameUser(content[0]);
                 writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf8');
-                return api.sendMessage(`[Admin] Đã thêm người dùng trở thành người điều hành bot:\n\n[ ${content} ] » ${name}`, threadID, messageID);
+                return api.sendMessage(`[Admin] Đã thêm người dùng trở thành người điều hành bot:\n\n[ ${content[0]} ] » ${name}`, threadID, messageID);
             }
             else return global.utils.throwError(this.config.name, threadID, messageID);
         }
@@ -69,7 +69,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion }) {
         case "rm":
         case "delete": {
             if (permssion != 2) return api.sendMessage("[Admin] Bạn không đủ quyền hạn để có thể sử dụng chức năng 'delete'", threadID, messageID);
-            if (mentions.length != 0) {
+            if (mentions.length != 0 && isNaN(content[0])) {
                 const mention = Object.keys(mentions);
                 var listAdd = [];
 
@@ -84,16 +84,18 @@ module.exports.run = async function ({ api, event, args, Users, permssion }) {
                 return api.sendMessage(`[Admin] Đã gỡ bỏ ${mention.length} người điều hành bot:\n\n${listAdd.join("\n").replace(/\@/g, "")}`, threadID, messageID);
             }
             else if (content.length != 0 && !isNaN(content[0])) {
-                const index = config.ADMINBOT.findIndex(item => item == content);
+                const index = config.ADMINBOT.findIndex(item => item.toString() == content[0]);
                 ADMINBOT.splice(index, 1);
                 config.ADMINBOT.splice(index, 1);
-                const name = userName.get(content) || await Users.getNameUser(content);
+                const name = userName.get(content[0]) || await Users.getNameUser(content[0]);
                 writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf8');
-                return api.sendMessage(`[Admin] Đã gỡ bỏ người điều hành bot:\n\n[ ${content} ] » ${name}`, threadID, messageID);
+                return api.sendMessage(`[Admin] Đã gỡ bỏ người điều hành bot:\n\n[ ${content[0]} ] » ${name}`, threadID, messageID);
             }
             else global.utils.throwError(this.config.name, threadID, messageID);
         }
-    };
 
-    return;
+        default: {
+            return global.utils.throwError(this.config.name, threadID, messageID);
+        }
+    };
 }
