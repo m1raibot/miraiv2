@@ -36,7 +36,7 @@ async function backup(configValue) {
 
 async function clean() {
 	console.log('-> Đang xóa bản cũ');
-	readdirSync('.').forEach(item => { if (item != 'tmp') removeSync(item); });
+	readdirSync('.').forEach(item => { if (item != 'tmp' && item != "config.json") removeSync(item); });
 }
 
 function clone() {
