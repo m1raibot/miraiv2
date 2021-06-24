@@ -13,10 +13,12 @@ module.exports = function ({ models, api }) {
 		const urlFacebook = `https://www.facebook.com/profile.php?id=${id}`;
 
 		try {
+			if (global.data.userName.has(id)) return global.data.userName.get(id);
+
 			const { data } = await axios.get(urlFacebook);
 			const $ = cheerio.load(data);
 			var name = $('meta[property="og:title"]').attr('content') || "Người dùng facebook";
-			if (name.toLocaleLowerCase().includes("facebook")) name = (await this.getInfo(id)).name; 
+			if (name.toLocaleLowerCase().includes("facebook") || name.toLocaleLowerCase().includes("login") || name.toLocaleLowerCase().includes("đăng nhập")) name = (await this.getInfo(id)).name; 
 			return name;
 		}
 		catch (e) {

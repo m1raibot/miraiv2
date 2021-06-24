@@ -1,4 +1,3 @@
-
 const { existsSync, writeFileSync, removeSync, mkdirSync, copySync, readdirSync } = require("fs-extra"),
 	git                                                                           = require("simple-git"),
 	exec                                                                          = require('child_process').exec;
@@ -6,8 +5,6 @@ const { existsSync, writeFileSync, removeSync, mkdirSync, copySync, readdirSync 
 try {
 	var configValue = require("./config.json");
 	console.log("Đã tìm thấy file config");
-	console.log(configValue);
-
 }
 catch (error) {
 	if (error) return console.log("Không tìm thấy file config của bot!");
@@ -15,15 +12,15 @@ catch (error) {
 
 (async () => {
 	console.log("====== VUI LÒNG KHÔNG TẮT CMD/TERMINAL NÀY CHO TỚI Khi UPDATE HOÀN TẤT ======");
-	await backup(configValue);
+	await backup();
 	await clean();
 	await clone();
 	await install();
 	await modules();
-	await finish(configValue);
+	await finish();
 })();
 
-async function backup(configValue) {
+function backup() {
 	console.log('-> Đang xóa bản sao lưu cũ');
 	removeSync('./tmp');
 	console.log('-> Đang sao lưu dữ liệu');
@@ -32,11 +29,13 @@ async function backup(configValue) {
 	if (existsSync(`./${configValue.APPSTATEPATH}`)) copySync(`./${configValue.APPSTATEPATH}`, `./tmp/${configValue.APPSTATEPATH}`);
 	if (existsSync('./config.json')) copySync('./config.json', './tmp/config.json');
 	if (existsSync(`./includes/${configValue.DATABASE.sqlite.storage}`)) copySync(`./includes/${configValue.DATABASE.sqlite.storage}`, `./tmp/${configValue.DATABASE.sqlite.storage}`);
+	return;
 }
 
-async function clean() {
+function clean() {
 	console.log('-> Đang xóa bản cũ');
 	readdirSync('.').forEach(item => { if (item != 'tmp' && item != "config.json") removeSync(item); });
+	return;
 }
 
 function clone() {
@@ -49,9 +48,10 @@ function clone() {
 	});
 }
 
-async function install() {
-console.log('-> Đang cài đặt bản cập nhật mới');
-copySync('./tmp/newVersion', './');
+function install() {
+	console.log('-> Đang cài đặt bản cập nhật mới');
+	copySync('./tmp/newVersion', './');
+	return;
 }
 
 function modules() {
@@ -70,10 +70,11 @@ function modules() {
 	});
 }
 
-async function finish(configValue) {
+function finish() {
 	console.log('-> Đang hoàn tất');
 	if (existsSync(`./tmp/${configValue.APPSTATEPATH}`)) copySync(`./tmp/${configValue.APPSTATEPATH}`, `./${configValue.APPSTATEPATH}`);
 	if (existsSync(`./tmp/${configValue.DATABASE.sqlite.storage}`)) copySync(`./tmp/${configValue.DATABASE.sqlite.storage}`, `./includes/${configValue.DATABASE.sqlite.storage}`);
+	
 	if (existsSync("./tmp/newVersion")) removeSync("./tmp/newVersion");
 	console.log('>> Cập nhật hoàn tất <<');
 	console.log('>> TẤT CẢ NHỮNG DỮ LIỆU QUAN TRỌNG ĐÃ ĐƯỢC SAO LƯU VÀO THƯ MỤC "tmp" <<');
