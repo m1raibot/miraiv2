@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "rank",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "CataliCS",
 	description: "Lấy rank hiện tại của bạn trên hệ thống bot remake rank_card from canvacord",
@@ -31,8 +31,6 @@ module.exports.makeRankCard = async (data) => {
 
     const { id, name, rank, level, expCurrent, expNextLevel } = data;
 	
-	console.log(await global.utils.assets.font("REGULAR-FONT"));
-
 	Canvas.registerFont(await global.utils.assets.font("REGULAR-FONT"), {
 		family: "Manrope",
 		weight: "regular",
