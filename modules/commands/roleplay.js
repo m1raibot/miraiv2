@@ -13,30 +13,13 @@ module.exports.config = {
     }
 };
 
-module.exports.onLoad = async () => {
-    const { resolve } = global.nodemodule["path"];
-    const { existsSync, readFileSync } = global.nodemodule["fs-extra"];
-
-    const path = resolve(__dirname, 'cache', 'anime.json');
-    const url = "https://raw.githubusercontent.com/catalizcs/storage-data/master/anime/anime.json";
-
-    try {
-        if (!existsSync(path)) await global.utils.downloadFile(url, path);
-
-        const data = JSON.parse(readFileSync(path));
-
-        if (data.length == 0) await global.utils.downloadFile(url, path);
-        return;
-    } catch (error) { await global.utils.downloadFile(url, path) };
-}
-
 module.exports.getAnime = async function (type) {
     try {
         const { readFileSync } = global.nodemodule["fs-extra"];
         const { join } = global.nodemodule["path"];
         const { getContent, downloadFile, randomString } = global.utils;
 
-        const animeData = JSON.parse(readFileSync(__dirname + "/cache/anime.json"));
+        const animeData = JSON.parse(readFileSync(await global.utils.assets.data("ANIME")));
         
         const dataImage = (await getContent(animeData[type])).data;
 

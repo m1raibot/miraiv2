@@ -78,12 +78,12 @@ module.exports.run = async ({ event, api, args, Threads }) => {
 		}
 		case "search": {
 			let contentJoin = content.join(" ");
-			let getThreads =  (await Threads.getAll(['threadID', 'name'])).filter(item => !!item.name);
+			let getThreads =  (await Threads.getAll(['threadID', 'threadInfo'])).filter(item => !!item.threadInfo);
 			let matchThreads = [], a = '', b = 0;
 			getThreads.forEach(i => {
-				if (i.name.toLowerCase().includes(contentJoin.toLowerCase())) {
+				if ((i.threadInfo.threadName || "").toLowerCase().includes(contentJoin.toLowerCase())) {
 					matchThreads.push({
-						name: i.name,
+						name: i.threadInfo.threadName,
 						id: i.threadID
 					});
 				}

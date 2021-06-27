@@ -8,17 +8,18 @@ module.exports = function ({ models, api }) {
 	}
 
 	async function getNameUser(id) {
-		const axios = require("axios");
-		const cheerio = require("cheerio");
-		const urlFacebook = `https://www.facebook.com/profile.php?id=${id}`;
-
 		try {
 			if (global.data.userName.has(id)) return global.data.userName.get(id);
 
-			const { data } = await axios.get(urlFacebook);
-			const $ = cheerio.load(data);
-			var name = $('meta[property="og:title"]').attr('content') || "Người dùng facebook";
-			if (name.toLocaleLowerCase().includes("facebook") || name.toLocaleLowerCase().includes("log in") || name.toLocaleLowerCase().includes("đăng nhập")) name = (await this.getInfo(id)).name; 
+			var data;
+			data = await api.httpGet("https://www.facebook.com/profile.php?id=" + id, {});
+			if (data.includes('for (;;);{"redirect":"')) {
+				var { x } = JSON.parse(`{"x":"${data.toString().split('":"')[1].split('"}')[0]}"}`);
+				data = await api.httpGet(`https://www.facebook.com${x.split("?")[0]}`, {});
+			}
+			var name = data.toString().split("<title>")[1].split("</title>")[0];
+
+			if (name.toLocaleLowerCase().includes("facebook")) name = (await this.getInfo(id)).name; 
 			return name;
 		}
 		catch (e) {

@@ -1,6 +1,6 @@
 {
 	"name": "miraiBot",
-	"version": "1.2.7",
+	"version": "1.2.8",
 	"description": "A simple Facebook Messenger Bot made by me(CatalizCS) and my brother SpermLord.",
 	"main": "mirai.js",
 	"scripts": {
@@ -29,6 +29,7 @@
 	},
 	"homepage": "https://github.com/miraipr0ject/miraiv2#readme",
 	"dependencies": {
+		"@miraipr0ject/assets": "",
 		"axios": "",
 		"body-parser": "",
 		"caesar-salad": "",
