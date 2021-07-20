@@ -1,5 +1,5 @@
 module.exports.config = {
-	name: "join",
+	name: "joinNoti",
 	eventType: ["log:subscribe"],
 	version: "1.0.1",
 	credits: "Mirai Team",

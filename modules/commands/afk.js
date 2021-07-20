@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "afk",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Bật tắt chế độ afk!",
@@ -9,32 +9,44 @@ module.exports.config = {
     cooldowns: 5
 };
 
-module.exports.handleEvent = ({ event, api }) => {
+module.exports.languages = {
+    "vi": {
+        "turnOffAFK": "[ %1 ] Đã tắt chế độ AFK",
+        "warningTag": "Hiện tại người dùng %1 đang bận %2",
+        "turnOnAFK": "[ %1 ] Đã bật chế độ AFK",
+        "reason": "với lý do: %1"
+    },
+    "en": {
+        "turnOffAFK": "[ %1 ] Turned off AFK mode",
+        "warningTag": "User %1 is currently busy %2",
+        "turnOnAFK": "[ %1 ] Turned on AFK mode",
+        "reason": "with reason: %1"
+    }
+}
+
+module.exports.handleEvent = ({ event, api, getText }) => {
     const { senderID, threadID, messageID, mentions } = event;
-
     if (!mentions || !global.moduleData.afkList) return;
-
     const mention = Object.keys(mentions);
     if (global.moduleData.afkList.has(senderID)) {
         global.moduleData.afkList.delete(senderID);
-        return api.sendMessage(`[ ${senderID} ] Đã tắt chế độ afk`, threadID, messageID);
+        return api.sendMessage(getText("turnOffAFK", senderID), threadID, messageID);
     }
     for (const id of mention) {
         if (global.moduleData.afkList.has(id)) {
             const reason = global.moduleData.afkList.get(id);
-            return api.sendMessage(`Hiện tại người dùng ${event.mentions[id]} đang bận ${(typeof reason == "string") ? `với lý do: ${reason}` : ""}`, threadID, messageID);
+            return api.sendMessage(getText("warningTag", event.mentions[id], (typeof reason == "string") ? getText("reason", reason) : ""), threadID, messageID);
         }
     };
     return;
 };
 
-module.exports.run = ({ event, api, args }) => {
+module.exports.run = ({ event, api, args, getText }) => {
     const { threadID, senderID, messageID } = event;
     const content = args.slice(1, args.length);
 
     if (!global.moduleData.afkList) global.moduleData.afkList = new Map();
     
     global.moduleData.afkList.set(senderID, content.join(" ") || null);
-    return api.sendMessage(`[ ${senderID} ] Đã bật chế độ afk`, threadID, messageID);       
+    return api.sendMessage(getText("turnOnAFK", senderID), threadID, messageID);       
 }
-

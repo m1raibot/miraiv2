@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "ping",
-	version: "0.0.3",
+	version: "1.0.4",
 	hasPermssion: 1,
 	credits: "Mirai Team",
 	description: "tag toàn bộ thành viên",
@@ -9,11 +9,10 @@ module.exports.config = {
 	cooldowns: 80
 };
 
-module.exports.run = async function({ api, event, args, Threads }) {
+module.exports.run = async function({ api, event, args }) {
 	try {
-		var listUserID = (await Threads.getInfo(event.threadID)).participantIDs;
 		const botID = api.getCurrentUserID();
-		listUserID = listUserID.filter(ID => ID != botID && ID != event.senderID);
+		const listUserID = event.participantIDs.filter(ID => ID != botID && ID != event.senderID);
 		var body = (args.length != 0) ? args.join(" ") : "@everyone", mentions = [], index = 0;
 		
 		for(const idUser of listUserID) {

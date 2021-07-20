@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "nhentai",
-    version: "1.0.1",
+    version: "1.0.2",
     hasPermssion: 0,
     credits: "Mirai Team",
     description: "Tìm kiếm thông tin truyện trên nhentai",
@@ -12,17 +12,30 @@ module.exports.config = {
     },
 };
 
-module.exports.run = ({ api, event, args }) => {
+module.exports.languages = {
+    "vi": {
+        "genarateCode": "Code lý tưởng dành cho người anh em là: %1",
+        "notFound": "Không thể tìm thấy hentai manga bạn yêu cầu!",
+        "returnResult": "» Tên: %1\n» Tác giả: %2\n» Nhân vật: %3\n» Tags: %4\n» Liên kết: https://nhentai.net/g/%5"
+    },
+    "en": {
+        "genarateCode": "The ideal code for you: %1",
+        "notFound": "Can't find your hentai manga!",
+        "returnResult": "» Name: %1\n» Author: %2\n» Characters: %3\n» Tags: %4\n» Link: https://nhentai.net/g/%5"
+    }
+}
+
+module.exports.run = ({ api, event, args, getText }) => {
     const request = global.nodemodule["request"];
-    if (!args[0] || typeof parseInt(args[0]) !== "number") return api.sendMessage(`Code lý tưởng dành cho người anh em là: ${Math.floor(Math.random() * 99999)}`, event.threadID, event.messageID);
+    const { threadID, messageID } = event;
+
+    if (!args[0] || typeof parseInt(args[0]) !== "number") return api.sendMessage(getText("genarateCode", Math.floor(Math.random() * 99999)), threadID, messageID);
     return request(`https://nhentai.net/api/gallery/${parseInt(args[0])}`, (error, response, body) => {
         try {
            var codeData = JSON.parse(body);
            if (codeData.error == true) throw new Error();
         }
-        catch {
-            return api.sendMessage("Không thể tìm thấy truyện bạn yêu cầu!", event.threadID, event.messageID);
-        }
+        catch { return api.sendMessage(getText("notFound"), threadID, messageID) }
 
         const title = codeData.title.pretty;
         var tagList = [],
@@ -33,6 +46,6 @@ module.exports.run = ({ api, event, args }) => {
         var artists = artistList.join(', ');
         var characters = characterList.join(', ');
         if (characters == '') characters = 'Original';
-        api.sendMessage(`» Tên: ${title}\n» Tác giả: ${artists}\n» Nhân vật: ${characters}\n» Tags: ${tags}\n» Liên kết: https://nhentai.net/g/${args[0]}`, event.threadID, event.messageID);
+        return api.sendMessage(getText("returnResult", title, artists, characters, tags, args[0]), threadID, messageID);
     });
 }

@@ -1,9 +1,9 @@
 module.exports.config = {
 	name: "rank",
-	version: "1.0.2",
+	version: "1.0.3",
 	hasPermssion: 0,
 	credits: "CataliCS",
-	description: "Lấy rank hiện tại của bạn trên hệ thống bot remake rank_card from canvacord",
+	description: "Lấy rank hiện tại của bạn trên hệ thống bot, remake rank_card from canvacord",
 	commandCategory: "system",
 	cooldowns: 20,
 	dependencies: {
@@ -11,7 +11,11 @@ module.exports.config = {
 		"path": "",
 		"jimp": "",
 		"node-superfetch": "",
-		"canvas": ""
+		"canvas": "",
+		"@miraipr0ject/assets": ""
+	},
+	envConfig: {
+		APIKEY: "571752207151901|AC-zG86sv6U6kpnT0_snIHBOHJc"
 	}
 };
 
@@ -31,6 +35,8 @@ module.exports.makeRankCard = async (data) => {
 
     const { id, name, rank, level, expCurrent, expNextLevel } = data;
 	
+	console.log(await global.utils.assets.font("REGULAR-FONT"));
+
 	Canvas.registerFont(await global.utils.assets.font("REGULAR-FONT"), {
 		family: "Manrope",
 		weight: "regular",
@@ -48,7 +54,7 @@ module.exports.makeRankCard = async (data) => {
 	var expWidth = (expCurrent * 615) / expNextLevel;
 	if (expWidth > 615 - 18.5) expWidth = 615 - 18.5;
 	
-	let avatar = await request.get(`https://graph.facebook.com/${id}/picture?width=512&height=512&access_token=170918394587449|sONjQBBNs316xVD31T-yuL4jfyc`);
+	let avatar = await request.get(`https://graph.facebook.com/${id}/picture?width=512&height=512&access_token=${global.configModule[this.config.name].APIKEY}`);
 
 	avatar = await this.circle(avatar.body);
 
@@ -125,42 +131,28 @@ module.exports.getInfo = async (uid, Currencies) => {
 	return { level, expCurrent, expNextLevel };
 }
 
-module.exports.run = async ({ event, api, args, Currencies, Users }) => {
-	const fs = global.nodemodule["fs-extra"];
+module.exports.languages = {
+	"vi": {
+		"userNotExist": "Bạn hiện không có trong cơ sở dữ liệu nên không thể thấy thứ hạng của mình, vui lòng thử lại sau 5 giây."
+	},
+	"en" :{
+		"userNotExist": "You are not currently in the database so you cannot see your rank, please try again in 5 seconds."
+	}
+}
+
+module.exports.run = async ({ event, api, Currencies, Users, getText }) => {
+	const { createReadStream, unlinkSync } = global.nodemodule["fs-extra"];
 	
 	let dataAll = (await Currencies.getAll(["userID", "exp"]));
-	const mention = Object.keys(event.mentions);
 
-	dataAll.sort((a, b) => {
-		if (a.exp > b.exp) return -1;
-		if (a.exp < b.exp) return 1;
-	});
+	dataAll.sort(function (a, b) { return b.exp - a.exp });
 
-	if (args.length == 0) {
-		const rank = dataAll.findIndex(item => parseInt(item.userID) == parseInt(event.senderID)) + 1;
-		const name = await Users.getNameUser(event.senderID);
-		if (rank == 0) return api.sendMessage("Bạn hiện không có trong cơ sở dữ liệu nên không thể thấy thứ hạng của mình, vui lòng thử lại sau 5 giây.", event.threadID, event.messageID);
-		const point = await this.getInfo(event.senderID, Currencies);
-		const timeStart = Date.now();
-		let pathRankCard = await this.makeRankCard({ id: event.senderID, name, rank, ...point })
-		return api.sendMessage({body: `${Date.now() - timeStart}`, attachment: fs.createReadStream(pathRankCard, {'highWaterMark': 128 * 1024}) }, event.threadID, () => fs.unlinkSync(pathRankCard), event.messageID);
-	}
-	if (mention.length == 1) {
-		const rank = dataAll.findIndex(item => parseInt(item.userID) == parseInt(mention[0])) + 1;
-		const name = await Users.getNameUser(mention[0]);
-		if (rank == 0) return api.sendMessage("Bạn hiện không có trong cơ sở dữ liệu nên không thể thấy thứ hạng của mình, vui lòng thử lại sau 5 giây.", event.threadID, event.messageID);
-		let point = await this.getInfo(mention[0], Currencies);
-		let pathRankCard = await this.makeRankCard({ id: mention[0], name, rank, ...point })
-		return api.sendMessage({ attachment: fs.createReadStream(pathRankCard) }, event.threadID, () => fs.unlinkSync(pathRankCard), event.messageID);
-	}
-	if (mention.length > 1) {
-		for (const userID of mention) {
-			const rank = dataAll.findIndex(item => parseInt(item.userID) == parseInt(userID)) + 1;
-			const name = await Users.getNameUser(userID);
-			if (rank == 0) return api.sendMessage("Bạn hiện không có trong cơ sở dữ liệu nên không thể thấy thứ hạng của mình, vui lòng thử lại sau 5 giây.", event.threadID, event.messageID);
-			let point = await this.getInfo(userID, Currencies);
-			let pathRankCard = await this.makeRankCard({ id: userID, name, rank, ...point })
-			return api.sendMessage({ attachment: fs.createReadStream(pathRankCard) }, event.threadID, () => fs.unlinkSync(pathRankCard), event.messageID);
-		}
-	}
+	const rank = dataAll.findIndex(item => parseInt(item.userID) == parseInt(event.senderID)) + 1;
+	if (rank == 0) return api.sendMessage(getText("userNotExist"), event.threadID, event.messageID);
+	const name = await Users.getNameUser(event.senderID);
+	const point = await this.getInfo(event.senderID, Currencies);
+	const timeStart = Date.now();
+	let pathRankCard = await this.makeRankCard({ id: event.senderID, name, rank, ...point })
+	return api.sendMessage({body: `${Date.now() - timeStart}`, attachment: createReadStream(pathRankCard, {'highWaterMark': 128 * 1024}) }, event.threadID, () => unlinkSync(pathRankCard), event.messageID);
+	
 }

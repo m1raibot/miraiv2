@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "roleplay",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Hun, ôm, ... đủ thứ trò in here!",
@@ -18,23 +18,13 @@ module.exports.getAnime = async function (type) {
         const { readFileSync } = global.nodemodule["fs-extra"];
         const { join } = global.nodemodule["path"];
         const { getContent, downloadFile, randomString } = global.utils;
-
         const animeData = JSON.parse(readFileSync(await global.utils.assets.data("ANIME")));
-        
         const dataImage = (await getContent(animeData[type])).data;
-
         const urlImage = dataImage.data.response.url;
-
         const ext = urlImage.substring(urlImage.lastIndexOf(".") + 1);
-
         const string = randomString(5);
-
-        console.log(string)
-
         const path = join(__dirname, "cache", `${string}.${ext}`);
-
         await downloadFile(urlImage, path);
-
         return path;
     } catch (e) { return console.log(e) };
 }
@@ -92,7 +82,20 @@ module.exports.handleEvent = async ({ event, api }) => {
     }
 }
 
-module.exports.run = async ({ event, api, Threads }) => {
+module.exports.languages = {
+	"vi": {
+		"on": "bật",
+		"off": "tắt",
+		"successText": "thành công roleplay!"
+	},
+	"en": {
+		"on": "on",
+		"off": "off",
+		"successText": "success roleplay!"
+	}
+}
+
+module.exports.run = async ({ event, api, Threads, getText }) => {
     let data = (await Threads.getData(event.threadID)).data || {};
     if (typeof data["roleplay"] == "undefined" || data["roleplay"] == false) data["roleplay"] = true;
 	else data["roleplay"] = false;
@@ -100,5 +103,5 @@ module.exports.run = async ({ event, api, Threads }) => {
 	await Threads.setData(event.threadID, { data });
 	global.data.threadData.set(parseInt(event.threadID), data);
 	
-	return api.sendMessage(`Đã ${(data["roleplay"] == true) ? "bật" : "tắt"} thành công roleplay!`, event.threadID);
+	return api.sendMessage(`${(data["roleplay"] == true) ? getText("on") : getText("off")} ${getText("successText")}`, event.threadID);
 }

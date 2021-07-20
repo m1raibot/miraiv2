@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "balance",
-	version: "0.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Kiểm tra số tiền của bản thân hoặc người được tag",
@@ -9,34 +9,37 @@ module.exports.config = {
 	cooldowns: 5
 };
 
-module.exports.run = async function({ api, event, args, Currencies }) {
+module.exports.languages = {
+	"vi": {
+		"sotienbanthan": "Số tiền bạn đang có: %1$",
+		"sotiennguoikhac": "Số tiền của %1 hiện đang có là: %2$"
+	},
+	"en": {
+		"sotienbanthan": "Your current balance: %1$",
+		"sotiennguoikhac": "%1's current balance: %2$."
+	}
+}
+
+module.exports.run = async function({ api, event, args, Currencies, getText }) {
 	const { threadID, messageID, senderID, mentions } = event;
 
 	if (!args[0]) {
 		const money = (await Currencies.getData(senderID)).money;
-		return api.sendMessage(`Số tiền bạn hiện đang có: ${money} đô`, threadID);
+		return api.sendMessage(getText("sotienbanthan", money), threadID);
 	}
+
 	else if (Object.keys(event.mentions).length == 1) {
 		var mention = Object.keys(mentions)[0];
 		var money = (await Currencies.getData(mention)).money;
 		if (!money) money = 0;
 		return api.sendMessage({
-			body: `Số tiền của ${mentions[mention].replace("@", "")} hiện đang có là: ${money} coin.`,
+			body: getText("sotiennguoikhac", mentions[mention].replace("@", ""), money),
 			mentions: [{
 				tag: mentions[mention].replace("@", ""),
 				id: mention
 			}]
 		}, threadID, messageID);
 	}
-	else if (Object.keys(event.mentions).length > 0) {
-		const mention = Object.keys(mentions);
-		var msg = "";
-		for (const value of mention) {
-			var money = (await Currencies.getData(value)).money;
-			if (!money) money = 0;
-			msg += (` - ${mentions[value].replace("@", "")}: ${money} coin\n`);
-		};
-		return api.sendMessage(`Số tiền của thành viên: \n${msg}`, threadID, messageID);
-	}
+
 	else return global.utils.throwError(this.config.name, threadID, messageID);
 }

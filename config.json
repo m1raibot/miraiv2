@@ -1,8 +1,10 @@
 {
+    "language": "en",
+    "keyActive": "",
     "DeveloperMode": true,
     "autoCreateDB": true,
     "allowInbox": true,
-    "selfListen": false,
+    "autoClean": false,
     "commandDisabled": [],
     "eventDisabled": [],
     "EMAIL": "",
@@ -11,13 +13,21 @@
     "BOTNAME": "",
     "PREFIX": "!",
     "ADMINBOT": [
-        "ID1",
-        "ID2"
+        "USERID1",
+        "USERID2"
     ],
     "DATABASE": {
         "sqlite": {
             "storage": "data.sqlite"
         }
     },
-    "APPSTATEPATH": "appstate.json"
+    "APPSTATEPATH": "appstate.json",
+    "FCAOption": {
+        "forceLogin": true,
+        "listenEvents": true,
+        "pauseLog": true,
+        "logLevel": "error",
+        "selfListen": false,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"
+    }
 }

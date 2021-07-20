@@ -15,6 +15,15 @@ module.exports.config = {
 	}
 };
 
+module.exports.languages = {
+	"vi": {
+		//Làm cái gì ở đây tuỳ thuộc vào bạn ¯\_(ツ)_/¯ 
+	},
+	"en": {
+		//Làm cái gì ở đây tuỳ thuộc vào bạn ¯\_(ツ)_/¯ 
+	}
+}
+
 module.exports.onLoad = function ({ configValue }) {
 	//Làm cái gì ở đây tuỳ thuộc vào bạn ¯\_(ツ)_/¯ 
 }

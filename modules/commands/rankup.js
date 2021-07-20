@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "rankup",
-	version: "0.0.2",
+	version: "1.0.0",
 	hasPermssion: 1,
 	credits: "Mirai Team",
 	description: "Thông báo rankup cho từng nhóm, người dùng",
@@ -15,13 +15,16 @@ module.exports.config = {
 	}
 };
 
-module.exports.handleEvent = async function({ api, event, Currencies, Users }) {
-	const {threadID, senderID } = event;
+module.exports.handleEvent = async function({ api, event, Currencies, Users, getText }) {
+	var {threadID, senderID } = event;
 	const { createReadStream, existsSync, mkdirSync } = global.nodemodule["fs-extra"];
 
-	const thread = global.data.threadData.get(parseInt(threadID)) || {};
+	threadID = String(threadID);
+	senderID = String(senderID);
 
-	var exp = parseInt((await Currencies.getData(senderID)).exp);
+	const thread = global.data.threadData.get(threadID) || {};
+
+	let exp = (await Currencies.getData(senderID)).exp;
 	exp = exp += 1;
 
 	if (isNaN(exp)) return;
@@ -36,7 +39,7 @@ module.exports.handleEvent = async function({ api, event, Currencies, Users }) {
 
 	if (level > curLevel && level != 1) {
 		const name = global.data.userName.get(senderID) || await Users.getNameUser(senderID);
-		var messsage = (typeof thread.customRankup == "undefined") ? msg = "Trình độ chém gió của {name} đã đạt tới level {level}" : msg = thread.customRankup,
+		var messsage = (typeof thread.customRankup == "undefined") ? msg = getText("levelup") : msg = thread.customRankup,
 			arrayContent;
 
 		messsage = messsage
@@ -49,7 +52,6 @@ module.exports.handleEvent = async function({ api, event, Currencies, Users }) {
 		const moduleName = this.config.name;
 		api.sendMessage(arrayContent, threadID, async function (error, info){
 			if (global.configModule[moduleName].autoUnsend) {
-				console.log(global.configModule[moduleName].autoUnsend);
 				await new Promise(resolve => setTimeout(resolve, global.configModule[moduleName].unsendMessageAfter * 1000));
 				return api.unsendMessage(info.messageID);
 			} else return;
@@ -59,16 +61,30 @@ module.exports.handleEvent = async function({ api, event, Currencies, Users }) {
 	await Currencies.setData(senderID, { exp });
 	return;
 }
-module.exports.run = async function({ api, event, Threads }) {
-	const { threadID, messageID } = event;
 
-	var data = (await Threads.getData(threadID)).data;
+module.exports.languages = {
+	"vi": {
+		"on": "bật",
+		"off": "tắt",
+		"successText": "thành công thông báo rankup!",
+		"levelup": "Trình độ chém gió của {name} đã đạt tới level {level}"
+	},
+	"en": {
+		"on": "on",
+		"off": "off",
+		"successText": "success notification rankup!",
+		"levelup": "{name}, your keyboard hero level has reached level {level}",
+	}
+}
+
+module.exports.run = async function({ api, event, Threads, getText }) {
+	const { threadID, messageID } = event;
+	let data = (await Threads.getData(threadID)).data;
 	
 	if (typeof data["rankup"] == "undefined" || data["rankup"] == false) data["rankup"] = true;
 	else data["rankup"] = false;
 	
 	await Threads.setData(parseInt(threadID), { data });
 	global.data.threadData.set(parseInt(threadID), data);
-	
-	return api.sendMessage(`Đã ${(data["rankup"] == true) ? "bật" : "tắt"} thành công thông báo rankup!`, threadID, messageID);
+	return api.sendMessage(`${(data["rankup"] == true) ? getText("on") : getText("off")} ${getText("successText")}`, threadID, messageID);
 }

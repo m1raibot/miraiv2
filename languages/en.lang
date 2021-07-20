@@ -1,0 +1,103 @@
+# If you want to move down the line, please use \n. e.g: SpermLord\nCatalizcs.
+# After changed, you have to restart the bot to use.
+# Put the # character at the beginning of each sentence if you don't want the code to run those lines. 
+# Thanks to https://www.facebook.com/duong.than.net for translate to English!
+
+# mirai.js 
+
+mirai.errorFormat=Malformed module!
+mirai.nameExist=Module's name is similar to another module!
+mirai.notFoundLanguage=Module %1 don't support your language
+mirai.notFoundPackage=Can't find package %1 support for module %2, installing...`
+mirai.cantInstallPackage=Can't install package %1 for module %2, error: %3
+mirai.loadedPackage=Installed whole package successfully for module %1
+mirai.loadedConfig=Installed config successfully for module %1
+mirai.cantLoadConfig=Can't install config of module %1, error: %2
+mirai.cantOnload=Can't launch setup of module %1, error: %1
+mirai.successLoadModule=Successfully installed module %1
+mirai.failLoadModule=Can't install module %1, error: %2
+mirai.finishLoadModule=Installed %1 module commands and %2 module events successfully 
+mirai.foundPathAppstate=Found file appstate
+mirai.notFoundPathAppstate=Can't find file appstate
+mirai.checkListGban=Cheking global ban list...
+mirai.banDevice=Your device have been banned from miraiproject, please contact to facebook https://fb.me/catalizcs to know more information or asking for unban key, if you already have unban key, please fill it below.
+mirai.keyNotSameFormat=Wrong format, code must contain 6 number.
+mirai.codeInputExpired=Your code is wrong or out of date.
+mirai.unbanDeviceSuccess=Your device are unban now, please restart to use.
+mirai.userBanned=You had been banned from miraiproject when %1 with reason: %2. Please contact to facebook https://fb.me/catalizCS to have more information!
+mirai.finishCheckListGban=Checked global ban list
+mirai.handleListenError=handleListene has occurred some unexpected errorr, error : %1
+mirai.warningSourceCode=DETECTED THAT SOURCE CODE'S STRUCTURE HAD BEEN CHANGED , STOP NOW!
+mirai.refreshListen=Refreshed handleListener...
+mirai.successConnectDatabase=Connected to database successfully!
+mirai.failConnectDatabase=Failed to connect to database, error: %1
+
+# includes/listen.js
+
+listen.startLoadEnvironment=Proceed to load the environment variable ...
+listen.loadedEnvironmentThread=Loaded thread environment variable successfully 
+listen.loadedEnvironmentUser=Loaded user environment variable successfully 
+listen.successLoadEnvironment=Loaded environment variable successfully 
+listen.failLoadEnvironment=Can't load environment variable, error: %1
+
+# includes/controller/currencies.js
+
+currencies.needObjectOrArray=Have to be an Array or an Object or maybe both
+currencies.needObject=Have to be an Object
+currencies.needNumber= Have to be an number
+
+# includes/controller/threads.js
+
+threads.needObjectOrArray=Have to be an Array or an Object or maybe both
+threads.needObject=Have to be an Object 
+
+# includes/controller/users.js
+
+users.needObjectOrArray=Have to be an Array or an Object or maybe both
+users.needObject=Have to be an Object
+
+# includes/handle/handleCommand.js
+
+handleCommand.userBanned=You are unable to use bot!\n%1\n%2
+handleCommand.threadBanned=Your thread are unable to use bot!\n%1\n%2
+handleCommand.commandNotExist=The command you used doesn't exist, is that "%1" or not?
+handleCommand.commandThreadBanned=Your thread is unable to use command "%1"
+handleCommand.commandUserBanned=You are unable to use command "%1"
+handleCommand.threadNotAllowNSFW=Your thread is not allowed to use NSFW commands
+handleCommand.cantGetInfoThread=Can't get your thread's info, error: %1
+handleCommand.permssionNotEnough=You have no permission to use command "%1"
+handleCommand.cantSetMessageReaction=Having some unexpected error at setMessageReaction, error: %1
+handleCommand.executeCommand=[ %1 ] Command used: %2 by user: %3 at thread: %4 | Args included : %5 | Processing time: %6ms
+handleCommand.commandError=Having some unexpected error when using command %1, error: %2
+
+# includes/handle/handleCommandEvent.js
+
+handleCommandEvent.moduleError=Having some unexpected error when using command %1, error: %2
+
+# includes/handle/handleCreateDatabase.js
+
+handleCreateDatabase.newThread=new thread: %1
+handleCreateDatabase.newUser=new user %1
+
+# includes/handle/handleEvent.js
+
+handleEvent.executeEvent=[ %1 ] Event was executed: %2 at thread: %3 | Processing time: %4ms
+handleEvent.eventError=Having some error when executing event %1, error: %12
+
+# includes/handle/handleReaction.js
+
+handleReaction.missingValue=Missing value to respond your problem
+handleReaction.executeError=Having some error when responding your problem, error: %1
+
+# includes/handle/handleReply.js
+
+handleReply.missingValue=Missing value to respond your problem
+handleReply.executeError=Having some error when responding your problem, error: %1
+
+# includes/handle/handleSchedule.js
+
+handleSchedule.exectuteError=Having some error when schedule at module %1, error: %2
+
+# utils/index.js
+
+utils.throwError=[!] The command you are using is not syntax correct, please use %1help %2 for more usage details
