@@ -90,6 +90,6 @@ module.exports.run = async function({ api, event, args, getText }) {
 			}
 			return api.sendMessage(getText("returnList", link.length, msg), event.threadID,(error, info) => global.client.handleReply.push({ name: this.config.name, messageID: info.messageID, author: event.senderID, link }), event.messageID);
 		}
-		catch (error) { return api.sendMessage(getText("returnError", error), event.threadID, event.messageID) }
+		catch (error) { return api.sendMessage(getText("returnError", JSON.stringify(error)), event.threadID, event.messageID) }
 	}
 }

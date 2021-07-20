@@ -154,5 +154,4 @@ module.exports.run = async ({ event, api, Currencies, Users, getText }) => {
 	const timeStart = Date.now();
 	let pathRankCard = await this.makeRankCard({ id: event.senderID, name, rank, ...point })
 	return api.sendMessage({body: `${Date.now() - timeStart}`, attachment: createReadStream(pathRankCard, {'highWaterMark': 128 * 1024}) }, event.threadID, () => unlinkSync(pathRankCard), event.messageID);
-	
 }

@@ -8,7 +8,7 @@
 mirai.errorFormat=Module không đúng định dạng!
 mirai.nameExist=Tên module bị trùng với một module mang cùng tên khác!
 mirai.notFoundLanguage=Module %1 không hỗ trợ ngôn ngữ ngôn ngữ của bạn
-mirai.notFoundPackage=Không tìm thấy package %1 hỗ trợ cho module %2, tiến hành cài đặt...`
+mirai.notFoundPackage=Không tìm thấy package %1 hỗ trợ cho module %2, tiến hành cài đặt...
 mirai.cantInstallPackage=Không thể cài đặt package %1 cho module %2, lỗi: %3
 mirai.loadedPackage=Đã tải thành công toàn bộ package cho module %1
 mirai.loadedConfig=Đã tải thành công config cho module %1

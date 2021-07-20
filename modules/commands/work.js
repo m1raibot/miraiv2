@@ -29,7 +29,7 @@ module.exports.languages = {
         "job12": "nội trợ",
         "job13": 'bán "hoa"',
         "job14": "tìm jav/hentai code cho SpermLord",
-        "job15": "play Yasuo and carry your team"
+        "job15": "chơi Yasuo và gánh đội của bạn"
     },
     "en": {
         "cooldown": "You have worked today, to avoid exhaustion please come back after: %1 minute(s) %2 second(s).",
@@ -48,7 +48,7 @@ module.exports.languages = {
         "job12": "housewife",
         "job13": 'sell "flower"',
         "job14": "find jav/hentai code for SpermLord",
-        "job15": "chơi Yasuo và gánh đội của bạn"
+        "job15": "play Yasuo and carry your team"
     }
 }
 

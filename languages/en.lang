@@ -8,7 +8,7 @@
 mirai.errorFormat=Malformed module!
 mirai.nameExist=Module's name is similar to another module!
 mirai.notFoundLanguage=Module %1 don't support your language
-mirai.notFoundPackage=Can't find package %1 support for module %2, installing...`
+mirai.notFoundPackage=Can't find package %1 support for module %2, installing...
 mirai.cantInstallPackage=Can't install package %1 for module %2, error: %3
 mirai.loadedPackage=Installed whole package successfully for module %1
 mirai.loadedConfig=Installed config successfully for module %1
@@ -67,7 +67,7 @@ handleCommand.threadNotAllowNSFW=Your thread is not allowed to use NSFW commands
 handleCommand.cantGetInfoThread=Can't get your thread's info, error: %1
 handleCommand.permssionNotEnough=You have no permission to use command "%1"
 handleCommand.cantSetMessageReaction=Having some unexpected error at setMessageReaction, error: %1
-handleCommand.executeCommand=[ %1 ] Command used: %2 by user: %3 at thread: %4 | Args included : %5 | Processing time: %6ms
+handleCommand.executeCommand=[ %1 ] Command used: %2 by user: %3 at thread: %4 | Args included: %5 | Processing time: %6ms
 handleCommand.commandError=Having some unexpected error when using command %1, error: %2
 
 # includes/handle/handleCommandEvent.js

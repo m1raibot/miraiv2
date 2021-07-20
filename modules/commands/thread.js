@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "thread",
-	version: "1.0.3",
+	version: "1.0.4",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm nhóm",
@@ -57,7 +57,7 @@ module.exports.languages = {
 
 		"returnBan": "[ Ban Thread ] You are requesting to ban thread:\n- Thread ID: %1%2\n\n❮ Reaction this message to complete ❯",
 		"returnUnban": "[ Unban Thread ] You are requesting to unban thread:\n- Thread ID: %1\n\n❮ Reaction this message to complete ❯",
-		"returnBanCommand": "[ banCommand Thread ] You are requesting to ban command with thread:\n - Thread ID: %2\n- Commands: %2\n\n❮ Reaction this message to complete ❯",
+		"returnBanCommand": "[ banCommand Thread ] You are requesting to ban command with thread:\n - Thread ID: %1\n- Commands: %2\n\n❮ Reaction this message to complete ❯",
 		"returnUnbanCommand": "[ unbanCommand Thread ] You are requesting to unban command with thread:\n - Thread ID: %1\n- Commands: %2\n\n❮ Reaction this message to complete ❯",
 	
 		"returnResult": "This is your result: \n",

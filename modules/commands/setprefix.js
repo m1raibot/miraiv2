@@ -28,10 +28,10 @@ module.exports.handleReaction = async function({ api, event, Threads, handleReac
 	try {
 		if (event.userID != handleReaction.author) return;
 		const { threadID, messageID } = event;
-		var data = (await Threads.getData(threadID)).data || {};
+		var data = (await Threads.getData(String(threadID))).data || {};
 		data["PREFIX"] = handleReaction.PREFIX;
 		await Threads.setData(threadID, { data });
-		await global.data.threadData.set(parseInt(threadID), data);
+		await global.data.threadData.set(String(threadID), data);
 		api.unsendMessage(handleReaction.messageID);
 		return api.sendMessage(getText("successChange", handleReaction.PREFIX), threadID, messageID);
 	} catch (e) { return console.log(e) }
@@ -45,7 +45,7 @@ module.exports.run = async ({ api, event, args, Threads , getText }) => {
 		var data = (await Threads.getData(event.threadID)).data || {};
 		data["PREFIX"] = global.config.PREFIX;
 		await Threads.setData(event.threadID, { data });
-		await global.data.threadData.set(parseInt(event.threadID), data);
+		await global.data.threadData.set(String(event.threadID), data);
 		return api.sendMessage(getText("resetPrefix", global.config.PREFIX), event.threadID, event.messageID);
 	} else return api.sendMessage(getText("confirmChange", prefix), event.threadID, (error, info) => {
 		global.client.handleReaction.push({
