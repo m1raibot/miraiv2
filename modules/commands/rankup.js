@@ -84,7 +84,7 @@ module.exports.run = async function({ api, event, Threads, getText }) {
 	if (typeof data["rankup"] == "undefined" || data["rankup"] == false) data["rankup"] = true;
 	else data["rankup"] = false;
 	
-	await Threads.setData(parseInt(threadID), { data });
-	global.data.threadData.set(parseInt(threadID), data);
+	await Threads.setData(threadID, { data });
+	global.data.threadData.set(threadID, data);
 	return api.sendMessage(`${(data["rankup"] == true) ? getText("on") : getText("off")} ${getText("successText")}`, threadID, messageID);
 }
