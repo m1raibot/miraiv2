@@ -7,10 +7,10 @@ module.exports = function ({ models, api }) {
 
 	async function getNameUser(id) {
 		try {
-			if (global.data.getNameUser.has(id)) return global.data.getNameUser.get(id);
+			if (global.data.userName.has(id)) return global.data.userName.get(id);
 			else if (global.data.allUserID.includes(id)) {
 				const nameUser = (await this.getData(id)).name;
-				if (nameUser) return nameUser
+				if (nameUser) return nameUser;
 				else return "Người dùng facebook";
 			} else return "Người dùng facebook";
 		}
