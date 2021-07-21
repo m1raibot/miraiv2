@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "thread",
-	version: "1.0.4",
+	version: "1.0.5",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm nhóm",
@@ -138,7 +138,6 @@ module.exports.run = async ({ event, api, args, Threads, getText }) => {
 	const { threadID, messageID } = event;
 	var targetID = String(args[1]);
 	var reason = (args.slice(2, args.length)).join(" ") || null;
-	const commandName = this.config.name;
 
 	if (isNaN(targetID)) {
 		targetID = String(event.threadID);
@@ -153,12 +152,12 @@ module.exports.run = async ({ event, api, args, Threads, getText }) => {
 				const { reason, dateAdded } = global.data.threadBanned.get(targetID) || {};
 				return api.sendMessage(getText("existBan", targetID, ((reason) ? `${getText("reason")}: "${reason}"` : ""), ((dateAdded) ? `${getText("at")}: ${dateAdded}` : "")), threadID, messageID);
 			}
-			return api.sendMessage(getText("returnBan", targetID, ((reason) ? `\n- ${getText("reason")}: ${reason}` : "")), threadID, function (error, info) {
+			return api.sendMessage(getText("returnBan", targetID, ((reason) ? `\n- ${getText("reason")}: ${reason}` : "")), threadID, (error, info) => {
 				global.client.handleReaction.push({
 					type: "ban",
 					targetID,
 					reason,
-					name: commandName,
+					name: this.config.name,
 					messageID: info.messageID,
 					author: event.senderID,
 					
@@ -170,11 +169,11 @@ module.exports.run = async ({ event, api, args, Threads, getText }) => {
 		case "-ub": {
 			if (!global.data.allThreadID.includes(targetID)) return api.sendMessage(getText("IDNotFound", "[ Unban Thread ]"), threadID, messageID);
 			if (!global.data.threadBanned.has(targetID)) return api.sendMessage(getText("notExistBan"), threadID, messageID);
-			return api.sendMessage(getText("returnUnban", targetID), threadID, function (error, info) {
+			return api.sendMessage(getText("returnUnban", targetID), threadID, (error, info) => {
 				global.client.handleReaction.push({
 					type: "unban",
 					targetID,
-					name: commandName,
+					name: this.config.name,
 					messageID: info.messageID,
 					author: event.senderID,
 					
@@ -193,12 +192,12 @@ module.exports.run = async ({ event, api, args, Threads, getText }) => {
 				reason = allCommandName.join(" ");
 			}
 			const commandNeedBan = reason.split(" ");
-			return api.sendMessage(getText("returnBanCommand", targetID, ((commandNeedBan.length == global.client.commands.size) ? getText("allCommand") : commandNeedBan.join(", "))), threadID, function (error, info) {
+			return api.sendMessage(getText("returnBanCommand", targetID, ((commandNeedBan.length == global.client.commands.size) ? getText("allCommand") : commandNeedBan.join(", "))), threadID, (error, info) => {
 				global.client.handleReaction.push({
 					type: "banCommand",
 					targetID,
 					commandNeedBan,
-					name: commandName,
+					name: this.config.name,
 					messageID: info.messageID,
 					author: event.senderID,
 					
@@ -215,12 +214,12 @@ module.exports.run = async ({ event, api, args, Threads, getText }) => {
 				reason = (global.data.commandBanned.get(targetID)).join(" ");
 			}
 			const commandNeedBan = reason.split(" ");
-			return api.sendMessage(getText("returnUnbanCommand", targetID, ((commandNeedBan.length == global.data.commandBanned.get(targetID).length) ? "toàn bộ lệnh" : commandNeedBan.join(", "))), threadID, function (error, info) {
+			return api.sendMessage(getText("returnUnbanCommand", targetID, ((commandNeedBan.length == global.data.commandBanned.get(targetID).length) ? "toàn bộ lệnh" : commandNeedBan.join(", "))), threadID, (error, info) => {
 				global.client.handleReaction.push({
 					type: "unbanCommand",
 					targetID,
 					commandNeedBan,
-					name: commandName,
+					name: this.config.name,
 					messageID: info.messageID,
 					author: event.senderID,
 					

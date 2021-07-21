@@ -1,7 +1,7 @@
 module.exports.config = {
 	name: "adminUpdate",
 	eventType: ["log:thread-admins","log:thread-name", "log:user-nickname"],
-	version: "1.0.0",
+	version: "1.0.1",
 	credits: "Mirai Team",
 	description: "Cập nhật thông tin nhóm một cách nhanh chóng",
     envConfig: {
@@ -10,15 +10,6 @@ module.exports.config = {
         timeToUnsend: 10
     }
 };
-
-module.exports.languages = {
-    "vi": {
-        "admin": "",
-        "member": "",
-        "nickname": "",
-        "threadName": ""
-    }
-}
 
 module.exports.run = async function ({ event, api, Threads }) { 
     const { threadID, logMessageType, logMessageData } = event;
@@ -51,8 +42,7 @@ module.exports.run = async function ({ event, api, Threads }) {
 
             case "log:user-nickname": {
                 dataThread.nicknames[logMessageData.participant_id] = logMessageData.nickname;
-                console.log(global.configModule["nickname"].allowChange)
-                if (!global.configModule["nickname"].allowChange.includes(threadID) && !dataThread.adminIDs.some(item => item.id == event.author) || event.author == api.getCurrentUserID()) return;
+                if (typeof global.configModule["nickname"] != "undefined" && !global.configModule["nickname"].allowChange.includes(threadID) && !dataThread.adminIDs.some(item => item.id == event.author) || event.author == api.getCurrentUserID()) return;
                 if (global.configModule[this.config.name].sendNoti) api.sendMessage(`[ Thread Update ] Đã cập nhật biệt danh của người dùng ${logMessageData.participant_id} thành: ${(logMessageData.nickname.length == 0) ? "tên gốc": logMessageData.nickname}`, threadID, async (error, info) => {
                     if (global.configModule[this.config.name].autoUnsend) {
                         await new Promise(resolve => setTimeout(resolve, global.configModule[this.config.name].timeToUnsend * 1000));

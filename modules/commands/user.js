@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "user",
-	version: "1.0.4",
+	version: "1.0.5",
 	hasPermssion: 2,
 	credits: "Mirai Team",
 	description: "Cấm hoặc gỡ cấm người dùng",
@@ -175,7 +175,7 @@ module.exports.run = async ({ event, api, args, Users, getText }) => {
 					type: "unban",
 					targetID,
 					nameTarget,
-					name: commandName,
+					name: this.config.name,
 					messageID: info.messageID,
 					author: event.senderID,
 					

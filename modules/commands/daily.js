@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "daily",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Nhận 200 coins mỗi ngày!",
@@ -14,7 +14,7 @@ module.exports.config = {
 
 module.exports.languages = {
     "vi": {
-        "cooldown": "Bạn đang trong thời gian chờ\nVui lòng thử lại sau: %1 phút %2 giây!",
+        "cooldown": "Bạn đang trong thời gian chờ\nVui lòng thử lại sau: %1 giờ %2 phút %3 giây!",
         "rewarded": "Bạn đã nhận %1$, để có thể tiếp tục nhận, vui lòng quay lại sau 12 tiếng"
     },
     "en": {
