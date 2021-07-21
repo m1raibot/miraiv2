@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "pay",
-    version: "1.0.0",
+    version: "1.0.1",
     hasPermssion: 0,
     credits: "Mirai Team",
     description: "Chuyển tiền cho người khác",
@@ -59,6 +59,6 @@ module.exports.run = async function ({ api, event, Currencies, Users, args, getT
         const nameTarget = global.data.userName.get(targetID) || await Users.getNameUser(targetID);
         await decreaseMoney(senderID, parseInt(moneyPay));
         await increaseMoney(targetID, parseInt(moneyPay) - taxed);
-        return api.sendMessage(getText("paySucces", (parseInt(moneyPay) - taxed), `${targetID} - ${nameTarget}`), threadID, messageID);
+        return api.sendMessage(getText("paySuccess", (parseInt(moneyPay) - taxed), `${targetID} - ${nameTarget}`), threadID, messageID);
     } catch { return api.sendMessage(getText("error"), threadID, messageID) }
 }

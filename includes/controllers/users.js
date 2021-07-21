@@ -56,8 +56,12 @@ module.exports = function ({ models, api }) {
 			return true;
 		}
 		catch (error) {
-			console.error(error);
-			throw new Error(error);
+			try {
+				await this.createData(userID, options);
+			} catch (error) {
+				console.error(error);
+				throw new Error(error);
+			}
 		}
 	}
 

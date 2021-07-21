@@ -35,10 +35,10 @@ module.exports = function({ api, models }) {
 			case "message":
 			case "message_reply":
 			case "message_unsend":
+				handleCreateDatabase({ event });
 				handleCommand({ event });
 				handleReply({ event });
 				handleCommandEvent({ event });
-				handleCreateDatabase({ event });
 				break;
 			case "event":
 				handleEvent({ event });
