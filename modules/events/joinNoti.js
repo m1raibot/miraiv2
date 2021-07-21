@@ -1,7 +1,7 @@
 module.exports.config = {
 	name: "joinNoti",
 	eventType: ["log:subscribe"],
-	version: "1.0.1",
+	version: "1.0.2",
 	credits: "Mirai Team",
 	description: "Thông báo bot hoặc người vào nhóm",
 	dependencies: {
@@ -9,7 +9,7 @@ module.exports.config = {
 	}
 };
 
-module.exports.run = async function({ api, event }) {
+module.exports.run = async function({ api, event, Users }) {
 	const { join } = global.nodemodule["path"];
 	const { threadID } = event;
 	if (event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID())) {
@@ -32,6 +32,12 @@ module.exports.run = async function({ api, event }) {
 				nameArray.push(userName);
 				mentions.push({ tag: userName, id });
 				memLength.push(participantIDs.length - i++);
+
+				if (!global.data.allUserID.includes(id)) {
+					await Users.createData(senderID, { name: userName });
+					global.data.allUserID.push(senderID);
+					logger(global.getText("handleCreateDatabase", "newUser", id), "[ DATABASE ]");
+				}
 			}
 			memLength.sort((a, b) => a - b);
 			

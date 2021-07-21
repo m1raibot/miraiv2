@@ -59,6 +59,6 @@ module.exports.run = async function ({ api, event, Currencies, Users, args, getT
         const nameTarget = global.data.userName.get(targetID) || await Users.getNameUser(targetID);
         await decreaseMoney(senderID, parseInt(moneyPay));
         await increaseMoney(targetID, parseInt(moneyPay) - taxed);
-        return api.sendMessage(getText("paySucces", parseInt(moneyPay) - taxed, `${targetID} - ${nameTarget}`), threadID, messageID);
+        return api.sendMessage(getText("paySucces", (parseInt(moneyPay) - taxed), `${targetID} - ${nameTarget}`), threadID, messageID);
     } catch { return api.sendMessage(getText("error"), threadID, messageID) }
 }
