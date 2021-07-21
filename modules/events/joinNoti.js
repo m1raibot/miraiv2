@@ -1,7 +1,7 @@
 module.exports.config = {
 	name: "joinNoti",
 	eventType: ["log:subscribe"],
-	version: "1.0.2",
+	version: "1.0.3",
 	credits: "Mirai Team",
 	description: "Thông báo bot hoặc người vào nhóm",
 	dependencies: {
@@ -34,8 +34,8 @@ module.exports.run = async function({ api, event, Users }) {
 				memLength.push(participantIDs.length - i++);
 
 				if (!global.data.allUserID.includes(id)) {
-					await Users.createData(senderID, { name: userName });
-					global.data.allUserID.push(senderID);
+					await Users.createData(id, { name: userName, data: {} });
+					global.data.allUserID.push(id);
 					logger(global.getText("handleCreateDatabase", "newUser", id), "[ DATABASE ]");
 				}
 			}
