@@ -7,16 +7,12 @@ module.exports = function ({ models, api }) {
 
 	async function getNameUser(id) {
 		try {
-			const cheerio = require("cheerio");
-			const axios = require("axios");
-			const urlFacebook = `https://www.facebook.com/profile.php?id=${id}`;
-
-			const { data } = await axios.get(urlFacebook);
-			const $ = cheerio.load(data);
-			var name = $('meta[property="og:title"]').attr('content') || "Người dùng facebook";
-			if (name.toLocaleLowerCase().includes("facebook")) name = (await this.getInfo(id)).name; 
-			if (name.toLocaleLowerCase().includes("facebook") || name.toLocaleLowerCase().includes("login") || name.toLocaleLowerCase().includes("đăng nhập")) name = (await this.getInfo(id)).name; 
-			return name;
+			if (global.data.getNameUser.has(id)) return global.data.getNameUser.get(id);
+			else if (global.data.allUserID.includes(id)) {
+				const nameUser = (await this.getData(id)).name;
+				if (nameUser) return nameUser
+				else return "Người dùng facebook";
+			} else return "Người dùng facebook";
 		}
 		catch { return "Người dùng facebook" }
 	}

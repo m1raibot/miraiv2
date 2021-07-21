@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "admin",
-	version: "1.0.4",
+	version: "1.0.5",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Quản lý admin bot",
@@ -48,7 +48,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion, getTe
 
             for (const idAdmin of listAdmin) {
                 if (parseInt(idAdmin)) {
-                    const name = userName.get(idAdmin) || await Users.getNameUser(idAdmin);
+                    const name = await Users.getNameUser(idAdmin);
                     msg.push(`- ${name}(https://facebook.com/${idAdmin})`);
                 }
             }
@@ -73,7 +73,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion, getTe
             else if (content.length != 0 && !isNaN(content[0])) {
                 ADMINBOT.push(content[0]);
                 config.ADMINBOT.push(content[0]);
-                const name = userName.get(content[0]) || await Users.getNameUser(content[0]);
+                const name = await Users.getNameUser(content[0]);
                 writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf8');
                 return api.sendMessage(getText("addedNewAdmin", 1, `[ ${content[1]} ] » ${name}`), threadID, messageID);
             }
@@ -102,7 +102,7 @@ module.exports.run = async function ({ api, event, args, Users, permssion, getTe
                 const index = config.ADMINBOT.findIndex(item => item.toString() == content[0]);
                 ADMINBOT.splice(index, 1);
                 config.ADMINBOT.splice(index, 1);
-                const name = userName.get(content[0]) || await Users.getNameUser(content[0]);
+                const name = await Users.getNameUser(content[0]);
                 writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf8');
                 return api.sendMessage(getText("removedAdmin", 1, `[ ${content[0]} ] » ${name}`), threadID, messageID);
             }

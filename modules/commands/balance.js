@@ -33,9 +33,9 @@ module.exports.run = async function({ api, event, args, Currencies, getText }) {
 		var money = (await Currencies.getData(mention)).money;
 		if (!money) money = 0;
 		return api.sendMessage({
-			body: getText("sotiennguoikhac", mentions[mention].replace("@", ""), money),
+			body: getText("sotiennguoikhac", mentions[mention].replace(/\@/g, ""), money),
 			mentions: [{
-				tag: mentions[mention].replace("@", ""),
+				tag: mentions[mention].replace(/\@/g, ""),
 				id: mention
 			}]
 		}, threadID, messageID);

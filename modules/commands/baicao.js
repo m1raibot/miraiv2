@@ -62,28 +62,24 @@ module.exports.handleEvent = async ({ event, api, Users }) => {
 		if (values.chiabai != 1) return;
 		var player = values.player.find(item => item.id == senderID);
 		if (player.ready == true) return;
-		const name = global.data.userName.get(player.id) || await Users.getNameUser(player.id);
+		const name = await Users.getNameUser(player.id);
 		values.ready += 1;
 		player.ready = true;
-		api.sendMessage(`Người chơi: ${name} Đã sẵn sàng lật bài, còn lại: ${values.player.length - values.ready} người chơi chưa lật bài`, event.threadID);
 		if (values.player.length == values.ready) {
 			const player = values.player;
-			player.sort((a, b) => {
-				if (a.tong > b.tong) return -1;
-				if (a.tong < b.tong) return 1;
-			});
+			player.sort(function (a, b) { return b.tong - a.tong });
 
 			var ranking = [], num = 1;
 
 			for (const info of player) {
-				const name = global.data.userName.get(info.id) || await Users.getNameUser(info.id);
+				const name = await Users.getNameUser(info.id);
 				ranking.push(`${num++} • ${name} với ${info.card1} | ${info.card2} | ${info.card3} => ${info.tong} nút\n`);
 			}
 
 			global.moduleData.baicao.delete(threadID);
 			return api.sendMessage(`Kết quả:\n\n ${ranking.join("\n")}`, threadID);
 		}
-		else return
+		else return api.sendMessage(`Người chơi: ${name} Đã sẵn sàng lật bài, còn lại: ${values.player.length - values.ready} người chơi chưa lật bài`, event.threadID);
 	}
 	
 	if (body.indexOf("nonready") == 0) {

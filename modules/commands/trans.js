@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "trans",
-	version: "1.0.0",
+	version: "1.0.1",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Dịch văn bản",
@@ -21,11 +21,11 @@ module.exports.run = async ({ api, event, args }) => {
 	if (event.type == "message_reply") {
 		translateThis = event.messageReply.body
 		if (content.indexOf("-> ") !== -1) lang = content.substring(content.indexOf("-> ") + 3);
-		else lang = 'vi';
+		else lang = global.config.language;
 	}
 	else if (content.indexOf(" -> ") == -1) {
 		translateThis = content.slice(0, content.length)
-		lang = 'vi';
+		lang = global.config.language;
 	}
 	return request(encodeURI(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${translateThis}`), (err, response, body) => {
 		if (err) return api.sendMessage("Đã có lỗi xảy ra!", event.threadID, event.messageID);

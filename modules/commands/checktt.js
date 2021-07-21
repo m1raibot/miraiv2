@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "checktt",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team",
 	description: "Kiểm tra lượt tương tác trong nhóm",
@@ -25,9 +25,9 @@ module.exports.languages = {
     }
 }
 
-module.exports.run = async function ({ args, api, event, Currencies, getText }) {
+module.exports.run = async function ({ args, api, event, Currencies, getText, Threads }) {
     var mention = Object.keys(event.mentions);
-    const data = await api.getThreadInfo(event.threadID);
+    const data = (await Threads.getData(event.threadID)).threadInfo;
     if (args[0] == "all") {
         var number = 1, msg = "", storage = [], exp = [];
         for (const value of data.userInfo) storage.push({"id" : value.id, "name": value.name});
@@ -43,7 +43,6 @@ module.exports.run = async function ({ args, api, event, Currencies, getText }) 
     else if (mention[0]) {
         var storage = [], exp = [];
         for (const value of data.userInfo) storage.push({"id" : value.id, "name": value.name});
-
         for (const user of storage) {
             const countMess = await Currencies.getData(user.id);
             exp.push({"name" : user.name, "exp": (typeof countMess.exp == "undefined") ? 0 : countMess.exp, "uid": user.id});
