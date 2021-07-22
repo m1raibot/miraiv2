@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "setrankup",
-    version: "1.0.4",
+    version: "1.0.5",
     hasPermssion: 1,
     credits: "Mirai Team",
     description: "Chỉnh sửa văn bản/ảnh động khi có thành viên mới vừa lên cấp",
@@ -78,7 +78,7 @@ module.exports.run = async function ({ args, event, api, Threads, getText }) {
                     if (!msg.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:gif|GIF)/g)) return api.sendMessage(getText("invaildURL"), threadID, messageID);
                     try {
                         await global.utils.downloadFile(msg, pathGif);
-                    } catch (e) { return api.sendMessage(getText("internetError"), threadID, messageID); console.log(e) }
+                    } catch (e) { return api.sendMessage(getText("internetError"), threadID, messageID) }
                     return api.sendMessage({ body: getText("saveGifSuccess"), attachment: createReadStream(pathGif) }, threadID, messageID);
                 }
             }

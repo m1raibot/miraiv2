@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "setleave",
-    version: "1.0.3",
+    version: "1.0.4",
     hasPermssion: 1,
     credits: "Mirai Team",
     description: "Chỉnh sửa văn bản/ảnh động khi có thành viên mới rời khỏi nhóm",
@@ -48,7 +48,7 @@ module.exports.languages = {
 
 module.exports.run = async function ({ args, event, api, Threads, getText }) {
     try {
-        const { existsSync } = global.nodemodule["fs-extra"];
+        const { existsSync, createReadStream } = global.nodemodule["fs-extra"];
         const { join } = global.nodemodule["path"];
         const { threadID, messageID } = event;
         const msg = args.slice(1, args.length).join(" ");

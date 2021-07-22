@@ -1,8 +1,8 @@
 module.exports.config = {
 	name: "baicao",
-	version: "1.0.3",
+	version: "1.0.4",
 	hasPermssion: 0,
-	credits: "CatalizCS",
+	credits: "Mirai Team",
 	description: "Game bài cào dành cho nhóm có đặt cược",
 	commandCategory: "game-mp",
 	usages: "[start/join/info/leave]",
