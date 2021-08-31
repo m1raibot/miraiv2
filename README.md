@@ -21,7 +21,7 @@
 	<img alt="code-version" src="https://img.shields.io/badge/dynamic/json?color=red&label=code%20version&prefix=v&query=%24.version&url=https%3A%2F%2Fraw.githubusercontent.com%2FmiraiPr0ject%2Fmiraiv2%2Fmaster%2Fpackage.json&style=flat-square">
 	<a href="https://github.com/miraiPr0ject/miraiv2/commits"><img alt="commits" src="https://img.shields.io/github/commit-activity/m/miraiPr0ject/miraiv2.svg?label=commit&style=flat-square"></a>
     <img alt="visitors" src="https://visitor-badge.laobi.icu/badge?page_id=miraiPr0ject.miraiv2">
-	<a href="//www.dmca.com/Protection/Status.aspx?ID=7b423b69-b5b7-4765-b0ef-8cd6c5f95f6c" title="DMCA.com Protection Status" class="dmca-badge"> <img src ="https://images.dmca.com/Badges/dmca_protected_sml_120n.png?ID=7b423b69-b5b7-4765-b0ef-8cd6c5f95f6c"  alt="DMCA.com Protection Status" /></a>  <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+	<a href="//www.dmca.com/Protection/Status.aspx?ID=7b423b69-b5b7-4765-b0ef-8cd6c5f95f6c" title="DMCA.com Protection Status" class="dmca-badge"> <img src ="https://images.dmca.com/Badges/dmca_protected_sml_120n.png?ID=7b423b69-b5b7-4765-b0ef-8cd6c5f95f6c"  alt="DMCA.com Protection Status" />
 </p>
 
 <!-- TABLE OF CONTENTS -->
